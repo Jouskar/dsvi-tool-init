@@ -3,9 +3,9 @@ import './App.css';
 import TempMap from "./components/TempMap"
 import reportWebVitals from './reportWebVitals';
 import SelectionPanel from './components/SelectionPanel/SelectionPanel';
-import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from 'react-leaflet';
+import { Map, MapContainer, TileLayer, Marker, Popup, GeoJSON } from 'react-leaflet';
 import vectors from "./vectors";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 
 const bbox = require('geojson-bbox');
@@ -17,11 +17,22 @@ function App() {
   const [adminLevel, setAdminLevel] = useState("1");
   const [geoData, setGeoData] = useState(vectors.ndvi[0]);
 
+  const geoJsonRef = useRef(null);
+  
+  useEffect(() => {
+    console.log(geoData);
+    console.log(adminLevel-1);
+    if (geoJsonRef.current) {
+      geoJsonRef.current.clearLayers().addData(geoData);
+    }
+  }, [adminLevel, geoData]);
+
   const changeAdminLevel = (event) => {
 
     if (event.target.checked) {
       setAdminLevel(event.target.value);
-      setGeoData(vectors.ndvi[adminLevel-1])
+      setGeoData(vectors.ndvi[adminLevel-1]);
+      console.log(geoData);
     }
   }
 
@@ -95,6 +106,7 @@ function App() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <GeoJSON
+          ref={geoJsonRef}
           data={geoData}
           onEachFeature={onEachRegion}
         />
