@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
+    'django.contrib.postgres',
     # 'debug_toolbar',
     'rest_framework',
     'corsheaders',
@@ -142,3 +144,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Change this before moving to production...
 CORS_ORIGIN_ALLOW_ALL = True
+# GDAL_LIBRARY_PATH = '/opt/homebrew/Cellar/gdal/3.6.4_1/lib/libgdal.dylib'
