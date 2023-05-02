@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "==4.2"
+numpy = "==1.24.0"
+psycopg2-binary = "*"
+geos = "*"
+proj = "*"
+postgis = "*"
+gdal = "==3.6.0"
+
+[dev-packages]
+
+[scripts]
+server = "python manage.py runserver 8000"
+
+[requires]
+python_version = "3.9"
+python_full_version = "3.9.16"
