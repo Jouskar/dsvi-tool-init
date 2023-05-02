@@ -80,9 +80,9 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'dsvi_dev',
         'USER': 'postgres',
-        # 'PASSWORD': 'root',
-        'HOST': 'localhost',
-        'PORT': '5432'
+        'PASSWORD': 'tU98pobf',
+        'HOST': '144.122.71.57',
+        'PORT': '8082'
 
     }
 }
