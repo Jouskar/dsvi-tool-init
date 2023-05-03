@@ -11,6 +11,8 @@ geos = "*"
 proj = "*"
 postgis = "*"
 gdal = "==3.6.0"
+djangorestframework = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 

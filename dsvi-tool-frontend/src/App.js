@@ -13,11 +13,23 @@ const bbox = require('geojson-bbox');
 const extent = bbox(vectors.aoi);
 
 function App() {
-
+  let geo;
   const [adminLevel, setAdminLevel] = useState("1");
   const [geoData, setGeoData] = useState(vectors.ndvi[0]);
 
   const geoJsonRef = useRef(null);
+
+  useEffect(() => {
+    fetch('http://127.0.0.1:8000/vector/')
+      .then(response => response.json())
+      .then(data => {
+        console.log('data', data[0].data_geojson); // or do something else with the data
+        geo = JSON.parse(data[0].data_geojson);
+        console.log('geo', geo);
+        setGeoData(geo);
+      })
+      .catch(error => console.log(error));
+  }, []);
   
   useEffect(() => {
     console.log(geoData);

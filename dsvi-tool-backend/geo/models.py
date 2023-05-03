@@ -16,8 +16,12 @@ class Status(models.IntegerChoices):
 
 class VectorModel(models.Model):
     name = models.CharField(max_length=240)
+    data_geojson = models.CharField(
+        null=True,
+    )
     data = models.MultiPolygonField(
         verbose_name="Vector data",
+        null=True,
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

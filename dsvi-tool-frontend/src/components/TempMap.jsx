@@ -5,9 +5,14 @@ import cellt_1 from "./../data/Vector/cellt_1.json";
 import "leaflet/dist/leaflet.css";
 import "./TempMap.css";
 
+async function logJSONData() {
+    const response = await fetch("http://example.com/movies.json");
+    const jsonData = await response.json();
+    console.log(jsonData);
+  }
+
 class TempMap extends Component {
     state = {};
-
     render() {
         return (
             <div>

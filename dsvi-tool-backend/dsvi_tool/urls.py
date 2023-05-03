@@ -14,8 +14,26 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from geo.models import VectorModel, RasterModel, PointModel
+from rest_framework import routers, serializers, viewsets, generics
+
+
+# Serializers define the API representation.
+class VectorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VectorModel
+        fields = ('data_geojson',)
+
+
+# ViewSets define the view behavior.
+class VectorViewSet(generics.ListCreateAPIView):
+    queryset = VectorModel.objects.all()
+    serializer_class = VectorSerializer
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('vector/', VectorViewSet.as_view()),
+    # path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

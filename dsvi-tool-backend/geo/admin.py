@@ -20,8 +20,8 @@ class VectorForm(forms.ModelForm):
             geojson_string = json.load(geojson_file)
             print("hebe")
             print(json.dumps(geojson_string))
-            geometry = GEOSGeometry(json.dumps(geojson_string), srid=4326)
-            instance.data = geometry
+            # geometry = GEOSGeometry(json.dumps(geojson_string), srid=4326)
+            instance.data_geojson = json.dumps(geojson_string)
         if commit:
             instance.save()
         return instance
