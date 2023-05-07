@@ -6,17 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="1f3c8abc-c817-45fe-82d1-8d44d7f7f2dd" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pipfile" beforeDir="false" afterPath="$PROJECT_DIR$/Pipfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pipfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Pipfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dsvi_tool/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/dsvi_tool/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dsvi_tool/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/dsvi_tool/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/geo/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/geo/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/geo/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/geo/migrations/0002_delete_dataset.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/geo/migrations/0003_alter_vectormodel_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/geo/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/geo/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../dsvi-tool-frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/../dsvi-tool-frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../dsvi-tool-frontend/src/components/TempMap.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dsvi-tool-frontend/src/components/TempMap.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
