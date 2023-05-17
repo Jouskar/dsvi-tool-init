@@ -14,7 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 from django.urls import path, include
+from geo.views import login_view
 from geo.models import VectorModel, RasterModel, PointModel
 from rest_framework import routers, serializers, viewsets, generics
 
@@ -35,5 +37,7 @@ class VectorViewSet(generics.ListCreateAPIView):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('vector/', VectorViewSet.as_view()),
+    # path('api/login/', login_view()),
+    path('login/', auth_views.LoginView.as_view(), name='login'),
     # path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
