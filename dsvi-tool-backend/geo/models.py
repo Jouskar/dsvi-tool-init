@@ -14,6 +14,18 @@ class Status(models.IntegerChoices):
     ACTIVE = 1, "Active"
 
 
+class LayerTypesModel(models.Model):
+    name = models.CharField(max_length=240)
+    description = models.CharField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    status = models.IntegerField(
+        choices=Status.choices,
+        default=Status.PENDING,
+        verbose_name="Status",
+    )
+
+
 class VectorModel(models.Model):
     name = models.CharField(max_length=240)
     data_geojson = models.CharField(
@@ -23,10 +35,19 @@ class VectorModel(models.Model):
         verbose_name="Vector data",
         null=True,
     )
+    layer_type = models.ForeignKey(
+        LayerTypesModel,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
+    critique_value = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     country = models.CharField(max_length=200)
-    region = models.CharField(max_length=200)
+    region = models.CharField(
+        max_length=200,
+        null=True,
+    )
     administrative_level = models.IntegerField()
     editor = models.ForeignKey(
         User,
@@ -38,6 +59,12 @@ class VectorModel(models.Model):
         default=Status.PENDING,
         verbose_name="Status",
     )
+
+
+class FeatureCityModel(models.Model):
+    name = models.CharField(max_length=240)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class RasterModel(models.Model):

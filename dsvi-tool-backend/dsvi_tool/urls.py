@@ -19,6 +19,7 @@ from django.urls import path, include
 from geo.views import login_view
 from geo.models import VectorModel, RasterModel, PointModel
 from rest_framework import routers, serializers, viewsets, generics
+from rest_framework.response import Response
 
 
 # Serializers define the API representation.
@@ -29,15 +30,30 @@ class VectorSerializer(serializers.ModelSerializer):
 
 
 # ViewSets define the view behavior.
-class VectorViewSet(generics.ListCreateAPIView):
-    queryset = VectorModel.objects.all()
+
+class VectorViewSet(generics.RetrieveAPIView):
     serializer_class = VectorSerializer
+
+    def get_queryset(self):
+        queryset = VectorModel.objects.all()
+
+        country = self.request.query_params.get('country')
+        layer = self.request.query_params.get('layer')
+
+        queryset = queryset.filter(country=country, layer_type__name=layer)
+
+        return queryset
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('vector/', VectorViewSet.as_view()),
     # path('api/login/', login_view()),
-    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('login', auth_views.LoginView.as_view(), name='login'),
     # path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

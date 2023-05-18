@@ -11,7 +11,8 @@ class VectorForm(forms.ModelForm):
 
     class Meta:
         model = VectorModel
-        fields = ('name', 'vector_file', 'country', 'region', 'administrative_level', 'editor', 'status')
+        fields = ('name', 'vector_file', 'layer_type', 'country', 'region',
+                  'administrative_level', 'critique_value', 'editor', 'status')
 
     def save(self, commit=True):
         instance = super().save(commit=False)
@@ -19,7 +20,6 @@ class VectorForm(forms.ModelForm):
         if geojson_file:
             # geojson_raw = geojson_file.read().decode('utf-8')
             geojson_string = json.load(geojson_file)
-            print("hebe")
             print(json.dumps(geojson_string))
             # geometry = GEOSGeometry(json.dumps(geojson_string), srid=4326)
             instance.data_geojson = json.dumps(geojson_string)
