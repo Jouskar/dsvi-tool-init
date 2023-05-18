@@ -6,6 +6,7 @@ import { Map, MapContainer, TileLayer, Marker, Popup, GeoJSON } from 'react-leaf
 //import vectors from "./vectors";
 import React, { useState, useRef, useEffect } from "react";
 import Form from "react-bootstrap/Form";
+import useHttp, { endpoints } from './hooks/use-http';
 
 const bbox = require('geojson-bbox');
 
@@ -13,21 +14,32 @@ const bbox = require('geojson-bbox');
 
 function MainPage() {
   let geo;
-  const [adminLevel, setAdminLevel] = useState("1");
+  const [adminLevel, setAdminLevel] = useState(1);
   const [geoData, setGeoData] = useState(null);
+  const [vectorDataList, setVectorDataList] = useState(null);
+  const [vectorLayer, setVectorLayer] = useState("cellt");
+  const [country, setCountry] = useState("Tajikistan");
 
   const geoJsonRef = useRef(null);
 
+  const parseVectorData = (data) => {
+    setVectorDataList(data);
+    setGeoData(JSON.parse(data[0].data_geojson));
+  }
+
+  let requestConfig = {
+    method: 'GET',
+    endpoint: endpoints.vector,
+    query: {
+      country: country,
+      layer: vectorLayer,
+    }
+  }
+
+  const {isLoading, error, sendRequest: fetchCountry} = useHttp(requestConfig, parseVectorData);
+
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/vector/')
-      .then(response => response.json())
-      .then(data => {
-        console.log('data', data[0].data_geojson); // or do something else with the data
-        geo = JSON.parse(data[0].data_geojson);
-        console.log('geo', geo);
-        setGeoData(geo);
-      })
-      .catch(error => console.log(error));
+    fetchCountry();
   }, []);
   
   useEffect(() => {
