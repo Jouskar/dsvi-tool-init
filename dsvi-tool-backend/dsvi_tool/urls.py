@@ -31,7 +31,7 @@ class VectorSerializer(serializers.ModelSerializer):
 
 # ViewSets define the view behavior.
 
-class VectorViewSet(generics.RetrieveAPIView):
+class VectorViewSet(generics.ListAPIView):
     serializer_class = VectorSerializer
 
     def get_queryset(self):
@@ -44,9 +44,9 @@ class VectorViewSet(generics.RetrieveAPIView):
 
         return queryset
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
 

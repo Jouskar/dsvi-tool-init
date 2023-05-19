@@ -2,7 +2,7 @@ from django.contrib import admin
 from django import forms
 from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.gis.gdal import GDALRaster
-from geo.models import VectorModel, RasterModel, PointModel
+from geo.models import *
 import json
 
 
@@ -13,6 +13,15 @@ class VectorForm(forms.ModelForm):
         model = VectorModel
         fields = ('name', 'vector_file', 'layer_type', 'country', 'region',
                   'administrative_level', 'critique_value', 'editor', 'status')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['layer_type'].widget = forms.Select(choices=self.get_layer_type_choices())
+        self.fields['region'].required = False
+
+    def get_layer_type_choices(self):
+        choices = [(layer_type.id, layer_type.name) for layer_type in LayerTypesModel.objects.all()]
+        return choices
 
     def save(self, commit=True):
         instance = super().save(commit=False)
@@ -58,4 +67,9 @@ class RasterAdmin(admin.ModelAdmin):
 
 @admin.register(PointModel)
 class PointAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(LayerTypesModel)
+class LayerTypesAdmin(admin.ModelAdmin):
     pass

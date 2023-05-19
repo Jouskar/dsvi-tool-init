@@ -43,19 +43,18 @@ function MainPage() {
   }, []);
   
   useEffect(() => {
-    console.log(geoData);
     console.log(adminLevel-1);
     if (geoJsonRef.current) {
       geoJsonRef.current.clearLayers().addData(geoData);
     }
-  }, [adminLevel, geoData]);
+  }, [geoData]);
 
   const changeAdminLevel = (event) => {
 
     if (event.target.checked) {
-      setAdminLevel(event.target.value);
-      //setGeoData(vectors.ndvi[adminLevel-1]);
-      console.log(geoData);
+      const selectedAdminLevel = parseInt(event.target.value);
+      setAdminLevel(selectedAdminLevel);
+      setGeoData(JSON.parse(vectorDataList[selectedAdminLevel-1].data_geojson));
     }
   }
 
