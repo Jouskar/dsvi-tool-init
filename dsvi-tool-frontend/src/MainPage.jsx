@@ -8,9 +8,25 @@ import React, { useState, useRef, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import useHttp, { endpoints } from './hooks/use-http';
 
+import {
+  FormControlLabel,
+  FormControl,
+  FormLabel,
+  RadioGroup, 
+  Radio,
+  Drawer,
+  List,
+  ListItem,
+  Typography,
+  Divider,
+
+ } from '@mui/material';
+
 const bbox = require('geojson-bbox');
 
 //const extent = bbox(vectors.aoi);
+
+const drawerWidth = 250;
 
 function MainPage() {
   let geo;
@@ -37,9 +53,11 @@ function MainPage() {
   }
 
   const {isLoading, error, sendRequest: fetchCountry} = useHttp(requestConfig, parseVectorData);
+  //const {isLoading, error, sendRequest: fetchLayerTypes} = useHttp(requestConfig, parseVectorData);
 
   useEffect(() => {
     fetchCountry();
+    console.log("hebele");
   }, []);
   
   useEffect(() => {
@@ -68,52 +86,52 @@ function MainPage() {
   }
   return (
     <div className='flex-container'>
-      <div className="sidebar">
-        <h3 className="text-center mt-2">MAIN MENU</h3>
-        <hr className="mt-2 mb-3" />
-
-        <div className="container">
-          <div className="row">
-            <div className="col-sm-12">
-              Select administrative level
-            </div>
-          </div>
-          <div className="row mt-2">
-            <Form>
-              <div key={"admin-level-div"} className="mb-3">
-                <Form.Check
-                  inline
-                  value="1"
-                  label="One"
-                  name="admin-level"
-                  type={'radio'}
-                  id={"admin-level-1"}
-                  defaultChecked={true}
-                  onChange={changeAdminLevel}
-                />
-                <Form.Check
-                  inline
-                  value="2"
-                  label="Two"
-                  name="admin-level"
-                  type={'radio'}
-                  id={"admin-level-2"}
-                  onChange={changeAdminLevel}
-                />
-                <Form.Check
-                  inline
-                  value="3"
-                  label="Three"
-                  name="admin-level"
-                  type={'radio'}
-                  id={"admin-level-3"}
-                  onChange={changeAdminLevel}
-                />
-              </div>
-            </Form>
-          </div>
-        </div>
-      </div>
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: drawerWidth,
+            boxSizing: 'border-box',
+          },
+        }}
+      >
+        <List>
+          <ListItem>
+            <Typography>MAIN MENU</Typography>
+          </ListItem>
+          <Divider/>
+          <ListItem>
+            <FormControl>
+              <FormLabel id="admin-level-label">Select administrative level</FormLabel>
+              <RadioGroup
+                row
+                aria-labelledby="admin-level-label"
+                name="admin-level-group"
+                value={adminLevel}
+                onChange={changeAdminLevel}
+              >
+                {["One", "Two", "Three"].map((text, index) => (
+                  <FormControlLabel sx={{
+                    '& .MuiSvgIcon-root': {
+                    fontSize: 15,
+                    },
+                    '& .MuiTypography-root': {
+                    fontSize: 15,
+                    },
+                  }} key={text} value={index+1} control={<Radio />} label={text} />
+                ))}
+              </RadioGroup>
+            </FormControl>
+          </ListItem>
+          <Divider/>
+          <ListItem>
+          </ListItem>
+          <ListItem>
+          </ListItem>
+        </List>
+      </Drawer>
       <MapContainer center={[39, 70]} zoom={9} scrollWheelZoom={true}
         whenReady={e => {
           //e.target.flyToBounds([
