@@ -33,12 +33,17 @@ function MainPage() {
   const [adminLevel, setAdminLevel] = useState(1);
   const [geoData, setGeoData] = useState(null);
   const [vectorDataList, setVectorDataList] = useState(null);
+  const [vectorLayerList, setVectorLayerList] = useState(null);
   const [vectorLayer, setVectorLayer] = useState("cellt");
   const [country, setCountry] = useState("Tajikistan");
 
   const geoJsonRef = useRef(null);
 
   const parseVectorData = (data) => {
+    setVectorLayerList(data);
+  }
+
+  const parseLayerTypes = (data) => {
     setVectorDataList(data);
     setGeoData(JSON.parse(data[0].data_geojson));
   }
@@ -52,13 +57,16 @@ function MainPage() {
     }
   }
 
-  const {isLoading, error, sendRequest: fetchCountry} = useHttp(requestConfig, parseVectorData);
-  //const {isLoading, error, sendRequest: fetchLayerTypes} = useHttp(requestConfig, parseVectorData);
+  const {isLayerLoading, errorLayer, sendRequest: fetchCountry} = useHttp(requestConfig, parseVectorData);
+  const {isLayerTypeLoading, errorLayerType, sendRequest: fetchLayerTypes} = useHttp(requestConfig, parseVectorData);
+
+  useEffect(() => {
+
+  }, []);
 
   useEffect(() => {
     fetchCountry();
-    console.log("hebele");
-  }, []);
+  }, [vectorLayer]);
   
   useEffect(() => {
     console.log(adminLevel-1);
