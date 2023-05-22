@@ -5,6 +5,7 @@ export const BASE_URL = 'http://127.0.0.1:8000/';
 export const endpoints = {
     login: 'login',
     vector: 'vector',
+    layerTypes: 'layer-types'
 }
 
 const objectToQuerystring = (obj) => {

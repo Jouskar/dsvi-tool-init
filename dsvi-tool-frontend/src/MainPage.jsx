@@ -7,19 +7,15 @@ import { Map, MapContainer, TileLayer, Marker, Popup, GeoJSON } from 'react-leaf
 import React, { useState, useRef, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import useHttp, { endpoints } from './hooks/use-http';
-
+import { ExpandMore } from '@mui/icons-material';
 import {
-  FormControlLabel,
-  FormControl,
-  FormLabel,
-  RadioGroup, 
-  Radio,
+  FormControlLabel, FormControl, FormLabel,
+  RadioGroup, Radio,
   Drawer,
-  List,
-  ListItem,
+  List, ListItem,
   Typography,
   Divider,
-
+  Accordion, AccordionSummary, AccordionDetails,
  } from '@mui/material';
 
 const bbox = require('geojson-bbox');
@@ -30,7 +26,7 @@ const drawerWidth = 250;
 
 function MainPage() {
   let geo;
-  const [adminLevel, setAdminLevel] = useState(1);
+  const [adminLevel, setAdminLevel] = useState("1");
   const [geoData, setGeoData] = useState(null);
   const [vectorDataList, setVectorDataList] = useState(null);
   const [vectorLayerList, setVectorLayerList] = useState(null);
@@ -40,15 +36,16 @@ function MainPage() {
   const geoJsonRef = useRef(null);
 
   const parseVectorData = (data) => {
-    setVectorLayerList(data);
+    setVectorDataList(data);
+    setGeoData(JSON.parse(data[parseInt(adminLevel)-1].data_geojson));
   }
 
   const parseLayerTypes = (data) => {
-    setVectorDataList(data);
-    setGeoData(JSON.parse(data[0].data_geojson));
+    console.log(data)
+    setVectorLayerList(data);
   }
 
-  let requestConfig = {
+  let requestConfigCountry = {
     method: 'GET',
     endpoint: endpoints.vector,
     query: {
@@ -57,11 +54,16 @@ function MainPage() {
     }
   }
 
-  const {isLayerLoading, errorLayer, sendRequest: fetchCountry} = useHttp(requestConfig, parseVectorData);
-  const {isLayerTypeLoading, errorLayerType, sendRequest: fetchLayerTypes} = useHttp(requestConfig, parseVectorData);
+  let requestConfigLayerTypes = {
+    method: 'GET',
+    endpoint: endpoints.layerTypes,
+  }
+
+  const {isLoading: isLayerLoading, error: errorLayer, sendRequest: fetchCountry} = useHttp(requestConfigCountry, parseVectorData);
+  const {isLoading: isLayerTypeLoading, error: errorLayerType, sendRequest: fetchLayerTypes} = useHttp(requestConfigLayerTypes, parseLayerTypes);
 
   useEffect(() => {
-
+    fetchLayerTypes();
   }, []);
 
   useEffect(() => {
@@ -84,6 +86,12 @@ function MainPage() {
     }
   }
 
+  const changeSocioeconomicLayer = (event) => {
+    if (event.target.checked) {
+      const selectedSocioeconomicLayer = event.target.value;
+      setVectorLayer(selectedSocioeconomicLayer);
+    }
+  }
 
   const onEachRegion = (region, layer) => {
     layer.bindPopup(
@@ -135,6 +143,36 @@ function MainPage() {
           </ListItem>
           <Divider/>
           <ListItem>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMore />}
+              aria-controls="socioeconomic-layers"
+              id="socioeconomic-layers-header"
+            >
+              <Typography>Socioeconomic Layers</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <FormControl>
+                <RadioGroup
+                  aria-labelledby="socioeconomic-layers-label"
+                  name="socioeconomic-layers-group"
+                  value={vectorLayer}
+                  onChange={changeSocioeconomicLayer}
+                >
+                  {vectorLayerList?.map((layer, index) => (
+                    <FormControlLabel sx={{
+                      '& .MuiSvgIcon-root': {
+                      fontSize: 15,
+                      },
+                      '& .MuiTypography-root': {
+                      fontSize: 15,
+                      },
+                    }} key={layer.name} value={layer.name} control={<Radio />} label={layer.description} />
+                  ))}
+                </RadioGroup>
+              </FormControl>
+            </AccordionDetails>
+          </Accordion>
           </ListItem>
           <ListItem>
           </ListItem>
