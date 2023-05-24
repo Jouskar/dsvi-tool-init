@@ -1,9 +1,18 @@
 from django.contrib import admin
 from django import forms
-from django.contrib.gis.geos import GEOSGeometry
-from django.contrib.gis.gdal import GDALRaster
+from django.contrib.gis.geos import GeometryCollection, GEOSGeometry
+from django.contrib.gis.gdal import GDALRaster, DataSource, OGRGeometry
 from geo.models import *
 import json
+
+
+class VectorJSONEncoder(json.JSONEncoder):
+    def encode(self, obj):
+        if isinstance(obj, dict):
+            include_fields = ['type', 'features']
+            new_obj = {key: value for key, value in obj.items() if key in include_fields}
+            return new_obj
+        return super().default(obj)
 
 
 class VectorForm(forms.ModelForm):
@@ -27,11 +36,10 @@ class VectorForm(forms.ModelForm):
         instance = super().save(commit=False)
         geojson_file = self.cleaned_data.get('vector_file')
         if geojson_file:
-            # geojson_raw = geojson_file.read().decode('utf-8')
             geojson_string = json.load(geojson_file)
-            print(json.dumps(geojson_string))
-            # geometry = GEOSGeometry(json.dumps(geojson_string), srid=4326)
-            instance.data_geojson = json.dumps(geojson_string)
+            # data_source = DataSource(json.dumps(geojson_string), ds_driver='GeoJSON')
+            # print(features_geometry)
+            instance.geojson_str = json.dumps(geojson_string)
         if commit:
             instance.save()
         return instance

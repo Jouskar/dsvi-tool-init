@@ -37,7 +37,7 @@ function MainPage() {
 
   const parseVectorData = (data) => {
     setVectorDataList(data);
-    setGeoData(JSON.parse(data[parseInt(adminLevel)-1].data_geojson));
+    setGeoData(JSON.parse(data[parseInt(adminLevel)-1].geojson_str));
   }
 
   const parseLayerTypes = (data) => {
@@ -82,7 +82,7 @@ function MainPage() {
     if (event.target.checked) {
       const selectedAdminLevel = parseInt(event.target.value);
       setAdminLevel(selectedAdminLevel);
-      setGeoData(JSON.parse(vectorDataList[selectedAdminLevel-1].data_geojson));
+      setGeoData(JSON.parse(vectorDataList[selectedAdminLevel-1].geojson_str));
     }
   }
 

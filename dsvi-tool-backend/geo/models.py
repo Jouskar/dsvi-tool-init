@@ -1,4 +1,5 @@
 from django.contrib.gis.db import models
+from django.contrib.postgres.fields import ArrayField
 from django.db.models import JSONField
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
@@ -25,16 +26,10 @@ class LayerTypesModel(models.Model):
         verbose_name="Status",
     )
 
-
 class VectorModel(models.Model):
     name = models.CharField(max_length=240)
-    data_geojson = models.CharField(
-        null=True,
-    )
-    data = models.MultiPolygonField(
-        verbose_name="Vector data",
-        null=True,
-    )
+    vector_file = models.FileField()
+    geojson_str = models.CharField()
     layer_type = models.ForeignKey(
         LayerTypesModel,
         null=True,
@@ -64,10 +59,10 @@ class VectorModel(models.Model):
     )
 
 
-class FeatureCityModel(models.Model):
-    name = models.CharField(max_length=240)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+class FeatureTypeModel(models.Model):
+    geometry = models.GeometryField()
+    properties = models.JSONField()
+    vector = models.ForeignKey(VectorModel, on_delete=models.CASCADE)
 
 
 class RasterModel(models.Model):

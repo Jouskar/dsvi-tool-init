@@ -26,7 +26,7 @@ from rest_framework.response import Response
 class VectorSerializer(serializers.ModelSerializer):
     class Meta:
         model = VectorModel
-        fields = ('data_geojson',)
+        fields = ('geojson_str',)
 
 
 class LayerTypeSerializer(serializers.ModelSerializer):
