@@ -1,9 +1,16 @@
 from django.contrib import admin
 from django import forms
-from django.contrib.gis.geos import GeometryCollection, GEOSGeometry
+from django.contrib.gis.geos import GeometryCollection, GEOSGeometry, MultiPolygon
 from django.contrib.gis.gdal import GDALRaster, DataSource, OGRGeometry
 from geo.models import *
 import json
+
+
+def change_property_key(property_key: str):
+    if property_key == 'NAME_1':
+        return 'name'
+    else:
+        return property_key.lstrip('_')
 
 
 class VectorJSONEncoder(json.JSONEncoder):
@@ -28,7 +35,8 @@ class VectorForm(forms.ModelForm):
         self.fields['layer_type'].widget = forms.Select(choices=self.get_layer_type_choices())
         self.fields['region'].required = False
 
-    def get_layer_type_choices(self):
+    @staticmethod
+    def get_layer_type_choices():
         choices = [(layer_type.id, layer_type.name) for layer_type in LayerTypesModel.objects.all()]
         return choices
 
@@ -37,11 +45,24 @@ class VectorForm(forms.ModelForm):
         geojson_file = self.cleaned_data.get('vector_file')
         if geojson_file:
             geojson_string = json.load(geojson_file)
-            # data_source = DataSource(json.dumps(geojson_string), ds_driver='GeoJSON')
             # print(features_geometry)
             instance.geojson_str = json.dumps(geojson_string)
         if commit:
             instance.save()
+            geojson_string = json.load(geojson_file)
+            data_source = DataSource(json.dumps(geojson_string), ds_driver='GeoJSON')
+            print('coutn', data_source)
+            for feature in data_source[0]:
+                geometry = feature.geom
+                properties = {change_property_key(field): feature.get(field)
+                              for field in feature.fields if field != 'NAME'}
+                new_feature = FeatureModel(geometry=geometry.geos, properties=properties)
+                for key, value in properties.items():
+                    setattr(new_feature, key, value)
+                print('Geometry:', geometry)
+                print('Properties:', properties)
+                new_feature.vector
+                new_feature.save()
         return instance
 
 

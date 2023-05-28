@@ -26,6 +26,7 @@ class LayerTypesModel(models.Model):
         verbose_name="Status",
     )
 
+
 class VectorModel(models.Model):
     name = models.CharField(max_length=240)
     vector_file = models.FileField()
@@ -59,9 +60,20 @@ class VectorModel(models.Model):
     )
 
 
-class FeatureTypeModel(models.Model):
-    geometry = models.GeometryField()
+class FeatureModel(models.Model):
+    geometry = models.MultiPolygonField()
     properties = models.JSONField()
+    name = models.CharField()
+    count = models.FloatField()
+    sum = models.FloatField()
+    mean = models.FloatField()
+    median = models.FloatField()
+    stdev = models.FloatField()
+    min = models.FloatField()
+    max = models.FloatField()
+    range = models.FloatField()
+    minority = models.FloatField()
+    majority = models.FloatField()
     vector = models.ForeignKey(VectorModel, on_delete=models.CASCADE)
 
 
