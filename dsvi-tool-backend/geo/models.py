@@ -2,6 +2,8 @@ from django.contrib.gis.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.db.models import JSONField
 from django.contrib.auth.models import User
+from django.contrib.gis.gdal import GDALRaster, DataSource, OGRGeometry
+import json
 from django.utils.translation import gettext_lazy as _
 
 
@@ -9,6 +11,16 @@ from django.utils.translation import gettext_lazy as _
 # Options are mainly affected by Leaflet options, so that should be handled via state through the frontend
 # The type information is important enough to be passed to the front-end alongside the dataset
 # Minimize total load on the front-end in terms of displaying the larger datasets by possibly adding a size field? TODO
+
+def change_property_key(property_key: str):
+    if property_key == 'NAME_1':
+        return 'name_1'
+    elif property_key == 'NAME_2':
+        return 'name_2'
+    else:
+        return property_key.lstrip('_')
+
+
 class Status(models.IntegerChoices):
     DELETED = -1, "Deleted"
     PENDING = 0, "Pending"
@@ -59,21 +71,37 @@ class VectorModel(models.Model):
         verbose_name="Status",
     )
 
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
+        super().save(force_insert, force_update, using, update_fields)
+        data_source = DataSource(self.geojson_str, ds_driver='GeoJSON')
+        for feature in data_source[0]:
+            geometry = feature.geom
+            properties = {change_property_key(field): feature.get(field)
+                          for field in feature.fields if field != 'NAME'}
+            new_feature = FeatureModel(geometry=geometry.geos, properties=properties)
+            for key, value in properties.items():
+                setattr(new_feature, key, value)
+            new_feature.vector = self
+            new_feature.save()
+
 
 class FeatureModel(models.Model):
     geometry = models.MultiPolygonField()
     properties = models.JSONField()
-    name = models.CharField()
-    count = models.FloatField()
-    sum = models.FloatField()
-    mean = models.FloatField()
-    median = models.FloatField()
-    stdev = models.FloatField()
-    min = models.FloatField()
-    max = models.FloatField()
-    range = models.FloatField()
-    minority = models.FloatField()
-    majority = models.FloatField()
+    name_1 = models.CharField()
+    name_2 = models.CharField(default='')
+    count = models.FloatField(null=True)
+    sum = models.FloatField(null=True)
+    mean = models.FloatField(null=True)
+    median = models.FloatField(null=True)
+    stdev = models.FloatField(null=True)
+    min = models.FloatField(null=True)
+    max = models.FloatField(null=True)
+    range = models.FloatField(null=True)
+    minority = models.FloatField(null=True)
+    majority = models.FloatField(null=True)
     vector = models.ForeignKey(VectorModel, on_delete=models.CASCADE)
 
 

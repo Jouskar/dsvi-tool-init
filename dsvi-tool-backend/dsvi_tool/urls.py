@@ -17,16 +17,31 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from geo.views import login_view
-from geo.models import VectorModel, RasterModel, PointModel, LayerTypesModel
+from geo.models import VectorModel, RasterModel, PointModel, LayerTypesModel, FeatureModel
 from rest_framework import routers, serializers, viewsets, generics
 from rest_framework.response import Response
 
-
 # Serializers define the API representation.
+
+
+class FeatureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FeatureModel
+        fields = ('geometry', 'properties',)
+
+
 class VectorSerializer(serializers.ModelSerializer):
+    features = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_features(vector):
+        features = FeatureModel.objects.filter(vector=vector)
+        serializer = FeatureSerializer(features, many=True)
+        return serializer.data
+
     class Meta:
         model = VectorModel
-        fields = ('geojson_str',)
+        fields = ('geojson_str',  'features',)
 
 
 class LayerTypeSerializer(serializers.ModelSerializer):
@@ -67,6 +82,7 @@ class VectorViewSet(generics.ListAPIView):
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
+        print(serializer)
         return Response(serializer.data)
 
 
