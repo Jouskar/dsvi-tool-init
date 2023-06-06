@@ -24,17 +24,20 @@ const objectToQuerystring = (obj) => {
 const useHttp = (requestConfig, applyData) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [reqBody, setReqBody] = useState(null);
 
     const sendRequest = async () => {
         setIsLoading(true);
         setError(null);
 
         try {
+            console.log("req", reqBody !== null)
             const response = await fetch(
                 `${BASE_URL}${requestConfig.endpoint}${objectToQuerystring(requestConfig.query)}`, {
+                    mode: "cors",
                     method: requestConfig.method,
                     headers: requestConfig.headers,
-                    body: JSON.stringify(requestConfig.body)
+                    body: reqBody !== null ? reqBody : JSON.stringify(requestConfig.body)
                 }
             );
 
@@ -54,6 +57,7 @@ const useHttp = (requestConfig, applyData) => {
         isLoading,
         error,
         sendRequest,
+        setReqBody,
     }
 }
 
