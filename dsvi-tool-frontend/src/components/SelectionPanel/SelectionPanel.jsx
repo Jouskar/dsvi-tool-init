@@ -18,7 +18,7 @@ import {
   Box,
   Icon,
 } from "@mui/material";
-import { PaidOutlined } from "@mui/icons-material";
+import { PaidOutlined, PublicOutlined } from "@mui/icons-material";
 import "./SelectionPanel.css";
 
 const drawerWidth = 250;
@@ -38,7 +38,7 @@ const SelectionPanel = (props) => {
     >
       <List>
         <ListItem>
-          <Typography>MAIN MENU</Typography>
+          <img src="logo.jpeg" width={215}></img>
         </ListItem>
         <Divider />
         <ListItem>
@@ -112,7 +112,45 @@ const SelectionPanel = (props) => {
             </AccordionDetails>
           </Accordion>
         </ListItem>
-        <ListItem></ListItem>
+        <ListItem sx={{ padding: 0 }}>
+          <Accordion elevation={0}>
+            <AccordionSummary
+              expandIcon={<ExpandMore />}
+              aria-controls="geodata-layers"
+              id="geodata-layers-header"
+            >
+              <PublicOutlined />
+              <Typography>Geodata Layers</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <FormControl>
+                <RadioGroup
+                  aria-labelledby="geodata-layers-label"
+                  name="geodata-layers-group"
+                  value={props.pointLayer}
+                  onChange={props.changeGeodataLayer}
+                >
+                  {props.pointLayerList?.map((layer, index) => (
+                    <FormControlLabel
+                      sx={{
+                        "& .MuiSvgIcon-root": {
+                          fontSize: 15,
+                        },
+                        "& .MuiTypography-root": {
+                          fontSize: 15,
+                        },
+                      }}
+                      key={layer.name}
+                      value={layer.name}
+                      control={<Radio />}
+                      label={layer.description}
+                    />
+                  ))}
+                </RadioGroup>
+              </FormControl>
+            </AccordionDetails>
+          </Accordion>
+        </ListItem>
       </List>
     </Drawer>
   );

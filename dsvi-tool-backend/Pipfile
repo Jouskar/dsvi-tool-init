@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 django = "==4.2"
-numpy = "==1.24.0"
+numpy = "*"
 psycopg2-binary = "*"
 geos = "*"
 proj = "*"
@@ -13,6 +13,10 @@ postgis = "*"
 gdal = "==3.6.0"
 djangorestframework = "*"
 django-cors-headers = "*"
+geopandas = "*"
+scikit-learn = "*"
+shapely = "*"
+geojson = "*"
 
 [dev-packages]
 

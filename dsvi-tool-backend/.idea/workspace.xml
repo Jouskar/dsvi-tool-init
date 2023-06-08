@@ -5,30 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1f3c8abc-c817-45fe-82d1-8d44d7f7f2dd" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/ml_util/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ml_util/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ml_util/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ml_util/migrations/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ml_util/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ml_util/tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ml_util/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cellt_1.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cellt_1_10AR7KK.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cellt_1_JZ4kRUu.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cellt_1_KHavK1Q.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cellt_1_Qvwyjgz.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cellt_1_kkcRvgD.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cellt_1_n4ka0vW.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cellt_2.geojson" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cellt_3.geojson" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dem_1.geojson" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pipfile" beforeDir="false" afterPath="$PROJECT_DIR$/Pipfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pipfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Pipfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dsvi_tool/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/dsvi_tool/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dsvi_tool/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/dsvi_tool/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/geo/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/geo/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/geo/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/geo/migrations/0002_featuretypemodel.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/geo/migrations/0003_remove_vectormodel_bounds.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/geo/migrations/0004_featuremodel_delete_featuretypemodel.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/geo/migrations/0005_alter_featuremodel_geometry.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/geo/migrations/0006_alter_featuremodel_geometry.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/geo/migrations/0007_alter_featuremodel_count.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/geo/migrations/0008_rename_st_dev_featuremodel_stdev.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/geo/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/geo/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/geo/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/geo/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../dsvi-tool-frontend/src/MainPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dsvi-tool-frontend/src/MainPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dsvi-tool-frontend/src/components/SelectionPanel/SelectionPanel.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dsvi-tool-frontend/src/components/SelectionPanel/SelectionPanel.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dsvi-tool-frontend/src/hooks/use-http.js" beforeDir="false" afterPath="$PROJECT_DIR$/../dsvi-tool-frontend/src/hooks/use-http.js" afterDir="false" />
     </list>
+    <list id="edd488b9-0c5a-4fc2-852b-8a189a9120b3" name="Changes by amer" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -52,15 +46,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "tolga",
+    "last_opened_file_path": "/Users/tolga/Documents/GitHub/dsvi-tool/dsvi-tool-backend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>
@@ -73,7 +78,11 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1682980500748</updated>
+      <workItem from="1686002699697" duration="11772000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
 </project>

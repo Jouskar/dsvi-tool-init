@@ -18,10 +18,18 @@ from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from geo.views import login_view
 from geo.models import VectorModel, RasterModel, PointModel, LayerTypesModel, FeatureModel
+from ml_util.models import MLModel
 from rest_framework import routers, serializers, viewsets, generics
 from rest_framework.response import Response
+from geo import views
 
 # Serializers define the API representation.
+
+
+class MLModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MLModel
+        fields = 'geojson_str'
 
 
 class FeatureSerializer(serializers.ModelSerializer):
@@ -41,7 +49,7 @@ class VectorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = VectorModel
-        fields = ('geojson_str',  'features',)
+        fields = ('geojson_str', 'features',)
 
 
 class LayerTypeSerializer(serializers.ModelSerializer):
@@ -86,11 +94,32 @@ class VectorViewSet(generics.ListAPIView):
         return Response(serializer.data)
 
 
+class MLModelViewSet(generics.ListAPIView):
+    serializer_class = MLModelSerializer
+
+    def get_queryset(self):
+        queryset = MLModel.objects.all()
+
+        vector_model_1 = self.request.query_params.get('vector1')
+        vector_model_2 = self.request.query_params.get('vector2')
+
+        #queryset = queryset.filter(vector_model1=VectorModel.objects.get(name=vector_model_1), vector_model2=VectorModel.objects.get(name=vector_model_2))
+        analysis = MLModel()
+        analysis.calculate_similarity(VectorModel.objects.get(name=vector_model_1), VectorModel.objects.get(name=vector_model_2))
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('vector/', VectorViewSet.as_view()),
     path('layer-types/', LayerTypeViewSet.as_view()),
+    path('vector-ml/', MLModelViewSet.as_view()),
     # path('api/login/', login_view()),
-    path('login', auth_views.LoginView.as_view(), name='login'),
+    path('login', views.login_view, name='login'),
     # path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

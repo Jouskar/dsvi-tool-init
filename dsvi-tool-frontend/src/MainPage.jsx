@@ -1,7 +1,5 @@
 import "./MainPage.css";
 import L from "leaflet";
-import TempMap from "./components/TempMap";
-import reportWebVitals from "./reportWebVitals";
 import SelectionPanel from "./components/SelectionPanel/SelectionPanel";
 import {
   Map,
@@ -32,10 +30,6 @@ import {
 } from "@mui/material";
 import { PaidOutlined, TroubleshootOutlined } from "@mui/icons-material";
 
-const bbox = require("geojson-bbox");
-
-//const extent = bbox(vectors.aoi);
-
 const style = {
   position: "absolute",
   top: "50%",
@@ -49,18 +43,29 @@ const style = {
 };
 
 function GeoJSONHandler(props) {
+  const [meanSum, setMeanSum] = useState([]);
   const MAP = useMap();
 
   const onEachRegion = (region, layer) => {
+    let name = region.properties.NAME_1;
+    name += !!region.properties.NAME_2 ? `/${region.properties.NAME_2}` : "";
     layer.bindPopup(
-      `${region.properties.NAME_1}/${region.properties.NAME_2} 
+      `${name} 
     count: ${region.properties._count}
-    sum: ${region.properties._sum}
+    sum: ${region.properties._sum.toFixed(2)}
     `
     );
-    console.log(layer);
-    if (layer.feature._max < parseInt(props.critiqueValue)) {
+    let meanCalc =
+      (layer.feature.properties._mean /
+        meanSum[parseInt(props.adminLevel) - 1]) *
+      10000;
+
+    if (meanCalc < 33) {
       layer.options.color = "red";
+    } else if (meanCalc < 66) {
+      layer.options.color = "yellow";
+    } else {
+      layer.options.color = "green";
     }
   };
 
@@ -68,6 +73,19 @@ function GeoJSONHandler(props) {
     const geoJson = L.geoJSON(
       JSON.parse(data[parseInt(props.adminLevel) - 1].geojson_str)
     );
+    console.log(data);
+    for (let index = 0; index < 3; index++) {
+      let sum = 0;
+      let meanTemp = meanSum;
+
+      console.log(data[index]);
+      data[index].features.forEach((feature) => {
+        sum += feature.properties.mean;
+      });
+      meanTemp.push(sum);
+      console.log(meanTemp);
+      setMeanSum(meanTemp);
+    }
     props.setVectorDataList(data);
     props.setGeoJson(geoJson);
     props.setGeoData(
@@ -76,7 +94,7 @@ function GeoJSONHandler(props) {
     props.setCritiqueValue(
       JSON.parse(data[parseInt(props.adminLevel) - 1].critique_value)
     );
-
+    console.log(geoJson.getBounds());
     MAP.fitBounds(geoJson.getBounds());
     MAP.setMaxBounds(geoJson.getBounds());
     MAP.options.minZoom = MAP.getBoundsZoom(geoJson.getBounds());
@@ -143,11 +161,40 @@ function MainPage() {
       temp.splice(index, 1);
       setVectorAnalyze(temp);
     }
-
-    console.log(vectorAnalyze);
   };
 
-  const handleVectorAnalyze = () => {};
+  /**
+   * Vector Analyze
+   */
+
+  let requestVectorAnalyze = {
+    method: "GET",
+    endpoint: endpoints.vectorAnalyze,
+    query: {
+      vector1: "",
+      vector2: "",
+    },
+  };
+
+  const parseAnalyze = (data) => {
+    console.log(data);
+    setGeoData(JSON.parse(data[parseInt(adminLevel) - 1].geojson_str));
+  };
+
+  const {
+    isLoading: isAnalyzeLoading,
+    error: errorAnalyze,
+    sendRequest: fetchAnalyze,
+  } = useHttp(requestVectorAnalyze, parseAnalyze);
+
+  const handleVectorAnalyze = async () => {
+    requestVectorAnalyze.query.vector1 = vectorAnalyze[0] + "_1";
+    requestVectorAnalyze.query.vector2 = vectorAnalyze[1] + "_1";
+
+    await fetchAnalyze();
+  };
+
+  /** */
 
   const parseLayerTypes = (data) => {
     console.log(data);
